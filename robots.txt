@@ -1,1 +1,1 @@
-Sitemap: https://x86party.github.io/whiteglass/sitemap.xml
+Sitemap: https://blog.x86.party/sitemap.xml
